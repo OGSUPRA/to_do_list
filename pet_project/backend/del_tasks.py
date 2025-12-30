@@ -18,7 +18,7 @@ def delete_task(id_task):
         cursor = conn.cursor()
         cursor.execute(f"DELETE FROM tasks WHERE id = {id_task}")
         conn.commit()
-        print(f"Из таблицы удалина строк с id {id_task}")
+        print(f"Из таблицы удалина строка с id {id_task}")
     except Error as e:
         print(f"Ошибка при удалении строки с id {id_task}: {e}")
     finally:
