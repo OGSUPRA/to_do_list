@@ -1,6 +1,6 @@
 import sqlite3
 
-DB_NAME = "todo_project/todo.db"
+DB_NAME = "todo.db"
 
 def get_connection():
     conn = sqlite3.connect(DB_NAME)
