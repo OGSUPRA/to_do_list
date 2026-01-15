@@ -13,6 +13,7 @@
 - Python 3.11
 - SQLite
 - CLI (terminal interface)
+- Flask
 
 ## ▶️ Запуск проекта
 ```bash
