@@ -77,6 +77,25 @@ def mark_task_done(task_id):
     conn.close()
 
 
+def mark_all_tasks_done():      # New function to mark all tasks as done 
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    print(f"DEBUG: Marking all tasks as done")
+
+    cursor.execute("""
+        UPDATE tasks
+        SET status = 'done'
+        WHERE deleted_at IS NULL
+    """)
+
+    rows_updated = cursor.rowcount
+    print(f"DEBUG: Updated {rows_updated} rows")
+
+    conn.commit()
+    conn.close()
+
+
 def mark_task_notdone(task_id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -132,4 +151,6 @@ def restore_task(task_id):
 
     conn.commit()
     conn.close()
+
+    
 
