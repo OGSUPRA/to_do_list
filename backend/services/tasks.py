@@ -77,7 +77,7 @@ def mark_task_done(task_id):
     conn.close()
 
 
-def mark_task_notdone(task_id):  #На данный момент реализация данного сервиса отсутствует
+def mark_task_notdone(task_id):
     conn = get_connection()
     cursor = conn.cursor()
 
