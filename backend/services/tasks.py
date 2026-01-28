@@ -4,10 +4,15 @@ def create_task(title, description=None):
     conn = get_connection()
     cursor = conn.cursor()
 
+    print(f"DEBUG: Create task: {title} description: {description}")
+
     cursor.execute(
         "INSERT INTO tasks (title, description) VALUES (?, ?)",
         (title, description)
     )
+
+    rows_updated = cursor.rowcount
+    print(f"DEBUG: Updated {rows_updated} rows")
 
     conn.commit()
     conn.close()
@@ -75,11 +80,16 @@ def delete_task(task_id):
     conn = get_connection()
     cursor = conn.cursor()
 
+    print(f"DEBUG: Marking task {task_id} as deleted_at")
+
     cursor.execute("""
         UPDATE tasks
         SET deleted_at = CURRENT_TIMESTAMP
         WHERE id = ? AND deleted_at IS NULL
     """, (task_id,))
+
+    rows_updated = cursor.rowcount
+    print(f"DEBUG: Updated {rows_updated} rows")
 
     conn.commit()
     conn.close()

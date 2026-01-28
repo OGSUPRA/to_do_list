@@ -24,17 +24,29 @@
                 {% if task.description != ''%}
                     <br>Описание: {{ task.description }}
                 {% endif %}
+                <a href="/done/{{ task.id }}">
+                <button>done</button>
+                </a>
+                <a href="/delete/{{ task.id }}">
+                <button>delete</button>
+                </a>
             {% else %}
                 <s>{{ task.title }}</s>
+                <a href="/notdone/{{ task.id }}">
+                <button>notdone</button>
+                </a>
+                <a href="/delete/{{ task.id }}">
+                <button>delete</button>
+                </a>
             {% endif %}
 
-            <br>
+            <!-- <br>
             <a href="/done/{{ task.id }}">
                 <button>done</button>
             </a>
             <a href="/delete/{{ task.id }}">
                 <button>delete</button>
-            </a>
+            </a> -->
         </li>
     {% endfor %}
 </ul>
