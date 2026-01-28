@@ -34,7 +34,7 @@ def get_all_tasks(include_done=True):
         """)
 
     tasks = cursor.fetchall()
-    conn.close()
+    conn.close() 
     return tasks
 
 
