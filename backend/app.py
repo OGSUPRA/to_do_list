@@ -12,14 +12,15 @@ from services.tasks import (
     restore_task
 )
 from services.auth import (
-get_all_users
+    validate_user
 )
-from services.registration import registration_user
+from services.registration import (
+registration_user,
+user_exists
+)
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-
-users_db = get_all_users()
 
 @app.route("/")
 def index():
@@ -37,7 +38,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         
-        if username in users_db and users_db[username] == password:
+        if validate_user(username, password):
             session['username'] = username
             flash('Вы успешно вошли в систему!', 'success')
             return redirect(url_for('index'))
@@ -46,16 +47,22 @@ def login():
     
     return render_template('login.html')
 
-@app.route("/registration")
+@app.route("/registration", methods=['GET', 'POST'])
 def registration_users():
-    return render_template("registration.html")
-
-@app.route("/register", methods = ["POST"])
-def register_user():
-    login = request.form["username"]
-    password = request.form["password"]
-    registration_user(login, password)
-    return redirect(url_for("authorization_users"))
+    if request.method == 'GET':
+        return render_template("registration.html")
+    else:
+        login = request.form["username"]
+        password = request.form["password"]
+        
+        # Нужно проверить, не существует ли уже такой пользователь
+        if user_exists(login):
+            flash('Пользователь с таким именем уже существует', 'error')
+            return render_template("registration.html")
+        
+        registration_user(login, password)
+        flash('Регистрация успешна! Теперь войдите в систему', 'success')
+        return redirect(url_for("login"))
 
 @app.route("/add", methods=["POST"])
 def add_task():
@@ -88,6 +95,20 @@ def delete(task_id):
 def restore(task_id):
     restore_task(task_id)
     return redirect(url_for("deleted_tasks"))
+
+@app.before_request
+def check_login():
+    allowed = ['login', 'static', 'registration_users']
+    if request.endpoint not in allowed:
+        if 'username' not in session:
+            return redirect(url_for('login'))
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    flash('Вы вышли из системы', 'info')
+    return redirect(url_for('login'))
+
 
 if __name__ == "__main__":
     init_db()

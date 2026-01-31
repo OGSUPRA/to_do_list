@@ -1,15 +1,14 @@
 from db.database import get_connection
 
 
-def get_all_users():
+def validate_user(username, password):
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT username, password FROM users
-    """)
+        SELECT 1 FROM users WHERE username = ? AND password = ?
+    """, (username, password))
 
-    users = cursor.fetchall()
+    is_valid = cursor.fetchone() is not None
     conn.close()
-    users_dict = {row[0]: row[1] for row in users}
-    return users_dict
+    return is_valid
