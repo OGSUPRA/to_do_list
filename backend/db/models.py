@@ -18,7 +18,7 @@ def init_db():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        login TEXT NOT NULL,
+        username TEXT NOT NULL,
         password TEXT NOT NULL,
         status_user TEXT CHECK(status_user IN ('admin','past_user')) DEFAULT 'past_user',
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

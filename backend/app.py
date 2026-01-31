@@ -10,6 +10,8 @@ from services.tasks import (
     delete_task,
     restore_task
 )
+from services.auth import authenticate_user
+from services.registration import registration_user
 
 app = Flask(__name__)
 
@@ -27,9 +29,25 @@ def deleted_tasks():
 def authorization_users():
     return render_template("authorization.html")
 
+@app.route("/login", methods = ["POST"])
+def login_user():
+    login = request.form["username"]
+    password = request.form["password"]
+    if authenticate_user(login, password):
+        return redirect(url_for("index"))
+    else:
+        return redirect(url_for("authorization_users"))
+
 @app.route("/registration")
 def registration_users():
     return render_template("registration.html")
+
+@app.route("/register", methods = ["POST"])
+def register_user():
+    login = request.form["username"]
+    password = request.form["password"]
+    registration_user(login, password)
+    return redirect(url_for("authorization_users"))
 
 @app.route("/add", methods=["POST"])
 def add_task():
