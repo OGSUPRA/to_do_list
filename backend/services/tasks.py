@@ -77,7 +77,7 @@ def mark_task_done(task_id):
     conn.close()
 
 
-def mark_all_tasks_done():      # New function to mark all tasks as done 
+def mark_all_tasks_done():   
     conn = get_connection()
     cursor = conn.cursor()
 
