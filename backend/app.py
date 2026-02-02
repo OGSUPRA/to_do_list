@@ -120,6 +120,10 @@ def logout():
     flash('Вы вышли из системы', 'info')
     return redirect(url_for('login'))
 
+@app.route("/settings", methods=["POST", "GET"])
+def user_settings():
+    return render_template("user_settings.html")
+
 
 if __name__ == "__main__":
     init_db()

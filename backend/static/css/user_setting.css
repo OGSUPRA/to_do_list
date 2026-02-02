@@ -1,0 +1,51 @@
+﻿.section-title {
+    margin: 0 0 10px;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 1.5rem;
+}
+
+.section-text {
+    margin: 0 0 16px;
+    color: var(--muted);
+    font-size: 1.02rem;
+}
+
+.settings-grid {
+    display: grid;
+    gap: 18px;
+}
+
+.settings-block {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    display: grid;
+    gap: 12px;
+}
+
+.settings-block.danger {
+    border-color: rgba(255, 107, 107, 0.45);
+    background: rgba(255, 107, 107, 0.08);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+}
+
+.form-stack {
+    display: grid;
+    gap: 12px;
+}
+
+.footer-actions {
+    margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}

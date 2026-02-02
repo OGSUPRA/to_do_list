@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user_setting.css') }}">
+</head>
+<body>
+    <div class="page">
+        <header class="hero">
+            <div>
+                <h1 class="hero-title">Настройки профиля</h1>
+                <p class="hero-subtitle">Управляйте данными аккаунта и безопасностью.</p>
+            </div>
+            <div class="chip">Профиль</div>
+        </header>
+
+        <section class="panel">
+            <div class="settings-grid">
+                <div class="settings-block">
+                    <h2 class="section-title">Аватар</h2>
+                    <p class="section-text">Загрузите новую фотографию профиля.</p>
+                    <form action="/user/avatar" method="post" enctype="multipart/form-data" class="form-grid">
+                        <input class="input" type="file" name="avatar" accept="image/*" required>
+                        <button class="btn" type="submit">Загрузить</button>
+                    </form>
+                </div>
+
+                <div class="settings-block">
+                    <h2 class="section-title">Имя пользователя</h2>
+                    <p class="section-text">Обновите отображаемое имя.</p>
+                    <form action="/user/name" method="post" class="form-grid">
+                        <input class="input" type="text" name="username" placeholder="Новое имя" required>
+                        <button class="btn" type="submit">Сохранить</button>
+                    </form>
+                </div>
+
+                <div class="settings-block">
+                    <h2 class="section-title">Пароль</h2>
+                    <p class="section-text">Смените пароль, чтобы защитить аккаунт.</p>
+                    <form action="/user/password" method="post" class="form-stack">
+                        <input class="input" type="password" name="current_password" placeholder="Текущий пароль" required>
+                        <input class="input" type="password" name="new_password" placeholder="Новый пароль" required>
+                        <input class="input" type="password" name="confirm_password" placeholder="Повторите пароль" required>
+                        <button class="btn" type="submit">Обновить пароль</button>
+                    </form>
+                </div>
+
+                <div class="settings-block danger">
+                    <h2 class="section-title">Удаление аккаунта</h2>
+                    <p class="section-text">Это действие нельзя отменить.</p>
+                    <form action="/user/delete" method="post" class="form-stack">
+                        <button class="btn btn-danger" type="submit">Удалить аккаунт</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer-actions">
+            <a class="btn btn-secondary" href="/tasks">На главную</a>
+        </div>
+    </div>
+</body>
+</html>
