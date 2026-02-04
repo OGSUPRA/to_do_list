@@ -14,7 +14,24 @@
                 <h1 class="hero-title">Todo List</h1>
                 <p class="hero-subtitle">Соберите задачи в красивом и спокойном пространстве.</p>
             </div>
-            <div class="chip">Сегодня — план без суеты</div>
+            <div class="hero-profile">
+                <div class="chip">Сегодня — план без суеты</div>
+                <div class="hero-user">
+                    <div class="hero-avatar">
+                        {% if avatar_url %}
+                            <img src="{{ avatar_url }}" alt="Аватар пользователя" class="hero-avatar-image">
+                        {% else %}
+                            <div class="hero-avatar-fallback">
+                                {{ session.username[0]|upper if session.username else '?' }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="hero-user-meta">
+                        <p class="hero-user-label">Ваш аккаунт</p>
+                        <p class="hero-user-name">{{ session.username }}</p>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <section class="panel">

@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.utils import secure_filename
 import os
 from db.models import init_db
 from services.tasks import (
@@ -19,9 +20,20 @@ from services.registration import (
 registration_user,
 user_exists
 )
+from services.users import (
+    set_user_avatar,
+    get_user_avatar
+)
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'images')
+app.config['ALLOWED_EXTENSIONS'] = {'.png', '.jpg', '.jpeg', '.gif', '.webp'}
+
+
+def _allowed_avatar_extension(filename: str) -> bool:
+    _, ext = os.path.splitext(filename)
+    return ext.lower() in app.config['ALLOWED_EXTENSIONS']
 
 @app.route("/")
 def index():
@@ -71,7 +83,9 @@ def registration_users():
 def tasks_list():
     user_id = session['user_id']
     tasks = get_all_tasks(user_id, include_done=True)
-    return render_template("tasks.html", tasks=tasks)
+    avatar_path = get_user_avatar(user_id)
+    avatar_url = url_for('static', filename=avatar_path) if avatar_path else None
+    return render_template("tasks.html", tasks=tasks, avatar_url=avatar_url)
 
 @app.route("/add", methods=["POST"])
 def add_task():
@@ -122,7 +136,46 @@ def logout():
 
 @app.route("/settings", methods=["POST", "GET"])
 def user_settings():
-    return render_template("user_settings.html")
+    user_id = session.get('user_id')
+    avatar_path = get_user_avatar(user_id) if user_id else None
+    avatar_url = url_for('static', filename=avatar_path) if avatar_path else None
+    username = session.get('username')
+    return render_template("user_settings.html", avatar_url=avatar_url, username=username)
+
+
+@app.route("/user/avatar", methods=["POST"])
+def upload_avatar():
+    if 'avatar' not in request.files:
+        flash('Файл не найден в запросе', 'error')
+        return redirect(url_for('user_settings'))
+
+    file = request.files['avatar']
+    if file.filename == '':
+        flash('Выберите файл для загрузки', 'error')
+        return redirect(url_for('user_settings'))
+
+    if not _allowed_avatar_extension(file.filename):
+        flash('Неподдерживаемый формат файла', 'error')
+        return redirect(url_for('user_settings'))
+
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+    user_id = session.get('user_id')
+    if not user_id:
+        flash('Требуется авторизация', 'error')
+        return redirect(url_for('login'))
+
+    safe_name = secure_filename(file.filename)
+    _, ext = os.path.splitext(safe_name)
+    filename = f"avatar_{user_id}{ext.lower()}"
+    save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(save_path)
+
+    relative_path = f"images/{filename}"
+    set_user_avatar(user_id, relative_path)
+
+    flash('Аватар успешно загружен', 'success')
+    return redirect(url_for('user_settings'))
 
 
 if __name__ == "__main__":

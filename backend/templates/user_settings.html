@@ -17,6 +17,22 @@
             <div class="chip">Профиль</div>
         </header>
 
+        <section class="profile-strip">
+            <div class="profile-avatar">
+                {% if avatar_url %}
+                    <img src="{{ avatar_url }}" alt="Аватар пользователя" class="profile-avatar-image">
+                {% else %}
+                    <div class="profile-avatar-fallback">
+                        {{ username[0]|upper if username else '?' }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="profile-meta">
+                <p class="profile-label">Ваш профиль</p>
+                <h2 class="profile-name">{{ username }}</h2>
+            </div>
+        </section>
+
         <section class="panel">
             <div class="settings-grid">
                 <div class="settings-block">
