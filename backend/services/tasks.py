@@ -27,7 +27,7 @@ def search_user(username):
     cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
 
     user = cursor.fetchone()
-    conn.close
+    conn.close()
     return user
 
 def get_all_tasks(user_id, include_done=True):
