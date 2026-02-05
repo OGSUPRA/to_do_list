@@ -51,11 +51,17 @@ py backend/app.py
 
 ## Скриншоты
 - Главная страница
+![main](https://github.com/user-attachments/assets/e97c81c5-2d77-429f-9233-b0695d76317c)
 - Авторизация
+![login_user](https://github.com/user-attachments/assets/2e8c7e1f-7361-46bc-83d2-22cf16fa895c)
 - Регистрация
+![reg_user](https://github.com/user-attachments/assets/ae8854e7-eec2-4d10-b420-11dc6d681a81)
 - Список задач
+![tasks_users](https://github.com/user-attachments/assets/ed2436b1-c1d1-4599-8a77-c438febf6408)
 - Корзина (удаленные задачи)
+![tasks_del](https://github.com/user-attachments/assets/7fc414fa-5359-4ceb-8542-985426ea0785)
 - Настройки профиля
+![user_settings](https://github.com/user-attachments/assets/70be4989-4978-4d2a-b636-35ed9ba6b882)
 
 ## Роуты (основные)
 - `/` — стартовая страница
